@@ -1,0 +1,47 @@
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import Layout from '../components/Layout';
+import { Row } from 'antd';
+import DoctorList from '../components/DoctorList';
+
+const HomePage = () => {
+
+  const [doctors, setDoctors] = useState([])
+
+  // user data
+  const getUserData = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/api/v1/user/getAllDoctors", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
+      if(res.data.success) {
+        setDoctors(res.data.data)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUserData();
+  
+    return () => {
+      setDoctors([])
+    }
+  }, [])
+
+  return (
+    <Layout>
+      <h2 className='text-center p-3'>Home page</h2>
+      <Row>
+        {doctors && doctors.map((doctor, index) => (
+          <DoctorList doctor={doctor} key={index}/>
+        ))}
+      </Row>
+    </Layout>
+  )
+}
+
+export default HomePage
