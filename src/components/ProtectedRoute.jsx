@@ -21,12 +21,12 @@ export default function ProtectedRoute({ children }) {
       if (res.data.success) {
         dispatch(setUser(res.data.data));
       } else {
+        // localStorage.clear();
         <Navigate to="/login" />;
-        localStorage.clear();
       }
     } catch (error) {
       dispatch(hideLoading());
-      localStorage.clear();
+      // localStorage.clear();
       console.log(error);
     }
   };

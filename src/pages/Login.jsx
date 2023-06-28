@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/RegisterStyles.css'
 import { Form, Input, message } from 'antd'
@@ -8,19 +8,19 @@ import axiosRequest from '../utils/axiosRequest'
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // form handler
   const onFinishHandler = async (values) => {
     try {
       dispatch(showLoading())
       const res = await axiosRequest.post("/user/login", values);
-      window.location.reload();
+      // window.location.reload();
       dispatch(hideLoading())
       if (res.data.success) {
         localStorage.setItem("token", res.data.token)
         message.success("Login Successfully!");
-        navigate("/");
+        navigate('/');
       } else {
         message.error(res.data.message);
       }
