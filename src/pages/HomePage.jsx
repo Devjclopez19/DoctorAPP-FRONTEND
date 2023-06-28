@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout';
 import { Row } from 'antd';
 import DoctorList from '../components/DoctorList';
+import axiosRequest from '../utils/axiosRequest';
 
 const HomePage = () => {
 
@@ -11,11 +11,7 @@ const HomePage = () => {
   // user data
   const getUserData = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/v1/user/getAllDoctors", {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token")
-        }
-      })
+      const res = await axiosRequest.get("/user/getAllDoctors")
       if(res.data.success) {
         setDoctors(res.data.data)
       }
@@ -26,7 +22,7 @@ const HomePage = () => {
 
   useEffect(() => {
     getUserData();
-  
+
     return () => {
       setDoctors([])
     }

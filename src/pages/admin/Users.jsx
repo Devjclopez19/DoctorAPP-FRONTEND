@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
-import axios from "axios";
 import { Table, message } from "antd";
+import axiosRequest from "../../utils/axiosRequest";
 
 const Users = () => {
 
@@ -9,14 +9,10 @@ const Users = () => {
 
   const getUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/v1/admin/getAllUsers", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const res = await axiosRequest.get("/admin/getAllUsers")
       if(res.data.success) {
         setUsers(res.data.data)
-      } 
+      }
     } catch (error) {
       console.log(error);
     }

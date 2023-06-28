@@ -2,10 +2,9 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/RegisterStyles.css'
 import { Form, Input, message } from 'antd'
-
-import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { hideLoading, showLoading } from '../redux/features/alertSlice'
+import axiosRequest from '../utils/axiosRequest'
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +14,7 @@ const Login = () => {
   const onFinishHandler = async (values) => {
     try {
       dispatch(showLoading())
-      const res = await axios.post("http://localhost:8080/api/v1/user/login", values);
+      const res = await axiosRequest.post("/user/login", values);
       window.location.reload();
       dispatch(hideLoading())
       if (res.data.success) {
@@ -46,6 +45,16 @@ const Login = () => {
           <button className='btn btn-primary form-control' type='submit'>Login</button>
           <div className='mt-2 text-center'>
           <Link to="/register">Not a user Register here</Link>
+          </div>
+          <div className="access-data">
+            <div className="item">
+              <b>Email: </b> user@gmail.com
+              <b> - Password: </b> 123456
+            </div>
+            <div className="item">
+              <b>Email: </b> admin@gmail.com
+              <b> - Password: </b> 123456
+            </div>
           </div>
         </Form>
       </div>

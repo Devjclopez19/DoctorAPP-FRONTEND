@@ -32,7 +32,7 @@ const Layout = ({children}) => {
     },
     {
       name: 'Profile',
-      path: `doctor/profile/${user?._id}`,
+      path: `/doctor/profile/${user?._id}`,
       icon: 'fa-solid fa-user'
     }
   ]
@@ -72,7 +72,7 @@ const Layout = ({children}) => {
                 <Badge count={user && user.notification.length}>
                   <i className='fa-solid fa-bell b-icon'  onClick={() => {navigate('/notification')}}></i>
                 </Badge>
-                <Link to='/profile'><i className='fa-solid fa-user'></i> {user?.name}</Link>
+                <Link to={user?.isDoctor ? `/doctor/profile/${user?._id}` : '/'}><i className='fa-solid fa-user'></i> {user?.name}</Link>
               </div>
             </div>
             <div className="body">{children}</div>

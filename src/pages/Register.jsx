@@ -2,10 +2,9 @@ import React from "react";
 import "../styles/RegisterStyles.css";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { hideLoading, showLoading } from "../redux/features/alertSlice";
+import axiosRequest from "../utils/axiosRequest";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ const Register = () => {
   const onFinishHandler = async (values) => {
     try {
       dispatch(showLoading())
-      const res = await axios.post("http://localhost:8080/api/v1/user/register", values);
+      const res = await axiosRequest.post("/user/register", values);
       dispatch(hideLoading())
       if (res.data.success) {
         message.success("Register Successfully!");

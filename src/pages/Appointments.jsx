@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { Table } from "antd";
+import axiosRequest from "../utils/axiosRequest";
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState();
@@ -11,14 +11,9 @@ const Appointments = () => {
 
   const getAppointments = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:8080/api/v1/user/user-appointments",
-        {
-          userId: user._id,
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
+      const res = await axiosRequest.get(
+        "/user/user-appointments",
+        { userId: user._id }
       );
       if (res.data.success) {
         setAppointments(res.data.data);

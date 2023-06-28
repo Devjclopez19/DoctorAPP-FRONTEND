@@ -4,7 +4,7 @@ import { Col, Form, Input, Row, TimePicker, message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { hideLoading, showLoading } from '../redux/features/alertSlice'
-import axios from 'axios'
+import axiosRequest from '../utils/axiosRequest'
 
 const ApplyDoctor = () => {
 
@@ -15,17 +15,15 @@ const ApplyDoctor = () => {
   const handleFinish = async (values) => {
     try {
       dispatch(showLoading())
-      const res = await axios.post("http://localhost:8080/api/v1/user/apply-doctor", 
-      {...values, userId: user._id, 
+      const res = await axiosRequest.post("/user/apply-doctor",
+      {
+        ...values, 
+        userId: user._id,
         timings: [
           moment(values.timings[0]).format("HH:mm"),
           moment(values.timings[1]).format("HH:mm")
         ],
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
+      });
       dispatch(hideLoading())
       if(res.data.success) {
         message.success(res.data.message)

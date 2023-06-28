@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { Col, Form, Input, Row, TimePicker, message } from "antd";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import moment from "moment";
+import axiosRequest from "../../utils/axiosRequest";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
@@ -16,14 +16,9 @@ const Profile = () => {
   //getDoc Details
   const getDoctorInfo = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/doctor/getDoctorInfo",
+      const res = await axiosRequest.post(
+        "/doctor/getDoctorInfo",
         { userId: params.id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
       );
 
       if (res.data.success) {
@@ -41,8 +36,8 @@ const Profile = () => {
   const handleFinish = async (values) => {
     try {
       dispatch(showLoading());
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/doctor/updateProfile",
+      const res = await axiosRequest.post(
+        "/doctor/updateProfile",
         {
           ...values,
           userId: user._id,
@@ -50,11 +45,6 @@ const Profile = () => {
             moment(values.timings[0]).format("HH:mm"),
             moment(values.timings[1]).format("HH:mm")
           ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
         }
       );
       dispatch(hideLoading());

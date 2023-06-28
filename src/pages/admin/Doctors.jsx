@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../../components/Layout'
-import axios from 'axios'
 import { Table, message } from 'antd'
+import axiosRequest from '../../utils/axiosRequest'
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([])
 
   const getDoctors= async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/v1/admin/getAllDoctors", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const res = await axiosRequest.get("/admin/getAllDoctors")
       if(res.data.success) {
         setDoctors(res.data.data)
-      } 
+      }
     } catch (error) {
       console.log(error);
     }
@@ -23,11 +19,7 @@ const Doctors = () => {
 
   const handleAccountStatus = async (record, status) => {
     try {
-      const res = await axios.post("http://localhost:8080/api/v1/admin/changeAccountStatus", {doctorId: record._id, userId: record.userId, status: status}, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      const res = await axiosRequest.post("/admin/changeAccountStatus", {doctorId: record._id, userId: record.userId, status: status});
       if(res.data.success) {
         message.success(res.data.message)
       }

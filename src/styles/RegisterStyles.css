@@ -6,8 +6,20 @@
 }
 .register-form {
   border: 1px solid #ccc;
-  padding: 3rem;
+  padding: 3rem 2rem;
   box-shadow: 0 0 0 1px #ccc;
   border-radius: 5px;
   width: 50vh;
+}
+.access-data {
+  box-shadow: 0 0 1px 1px #ccc;
+  margin-top: 10px;
+  padding: 10px;
+}
+.access-data h5 {
+  font-size: 16px;
+  text-align: center;
+}
+.access-data .item {
+  font-size: 13px;
 }

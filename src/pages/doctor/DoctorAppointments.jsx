@@ -1,9 +1,10 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import dayjs from "dayjs";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { Table, message } from "antd";
+import axiosRequest from "../../utils/axiosRequest";
 
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -11,13 +12,10 @@ const DoctorAppointments = () => {
 
   const getAppointments = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:8080/api/v1/doctor/doctor-appointments",
+      const res = await axiosRequest.get(
+        "/doctor/doctor-appointments",
         {
           userId: user?._id,
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
         }
       );
       if (res.data.success) {
@@ -36,15 +34,15 @@ const DoctorAppointments = () => {
 
   const handleStatus = async (record, status) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/doctor/update-status",
+      const res = await axiosRequest.post(
+        "/doctor/update-status",
         {
           appointmentsId: record._id,
-          status
+          status,
         },
         {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token")
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         }
       );

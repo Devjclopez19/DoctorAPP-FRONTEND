@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { DatePicker, TimePicker, message } from "antd";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../redux/features/alertSlice";
 import dayjs from "dayjs";
+import axiosRequest from "../utils/axiosRequest";
 
 // const format = "HH:mm";
 const BookingPage = () => {
@@ -21,15 +20,7 @@ const BookingPage = () => {
   // user data
   const getDoctorData = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/doctor/getDoctorById",
-        { doctorId: params.doctorId },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axiosRequest.post("/doctor/getDoctorById", { doctorId: params.doctorId });
       if (res.data.success) {
         setDoctor(res.data.data);
       }
@@ -52,8 +43,8 @@ const BookingPage = () => {
         return alert("Date & Time Required")
       }
       dispatch(showLoading());
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/user/book-appointment",
+      const res = await axiosRequest.post(
+        "/user/book-appointment",
         {
           doctorId: params.doctorId,
           userId: user._id,
@@ -61,11 +52,6 @@ const BookingPage = () => {
           date: date,
           userInfo: user,
           time: time,
-        },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
         }
       );
       dispatch(hideLoading());
@@ -81,18 +67,13 @@ const BookingPage = () => {
   const handleAvailability = async () => {
     try {
     // dispatch(showLoading());
-      const res = await axios.post(
-        "http://localhost:8080/api/v1/user/booking-availability",
+      const res = await axiosRequest.post(
+        "/user/booking-availability",
         {
           doctorId: params.doctorId,
           date,
           time,
         },
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
       );
       // dispatch(hideLoading());
       if (res.data.success) {
