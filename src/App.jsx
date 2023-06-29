@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -82,6 +82,7 @@ function App() {
               <Register />
             </PublicRoute>
           } />
+          <Route path='*' element={ <Navigate to="/" /> }/>
         </Routes>)}
       </BrowserRouter>
     </>
