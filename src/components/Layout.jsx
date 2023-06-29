@@ -2,18 +2,21 @@ import React from 'react'
 import '../styles/LayoutStyles.css'
 import { userMenu, adminMenu } from '../Data/data'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Badge, message } from 'antd'
+import { setUser, logout } from '../redux/features/userSlice'
 
 const Layout = ({children}) => {
 
   const { user } = useSelector(state => state.user)
   const location = useLocation()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   // logout function
   const handleLogout = () => {
     localStorage.clear()
+    dispatch(logout())
     message.success('Logout Successfully')
     navigate('/login')
   }
