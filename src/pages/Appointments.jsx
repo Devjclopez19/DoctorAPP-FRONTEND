@@ -11,9 +11,12 @@ const Appointments = () => {
 
   const getAppointments = async () => {
     try {
-      const res = await axiosRequest.get(
-        "/user/user-appointments",
-        { userId: user._id }
+      const res = await axiosRequest.get(`/user/user-appointments/${user._id}`,
+        {  
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          },
+        }
       );
       if (res.data.success) {
         setAppointments(res.data.data);

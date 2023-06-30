@@ -8,7 +8,11 @@ const Doctors = () => {
 
   const getDoctors= async () => {
     try {
-      const res = await axiosRequest.get("/admin/getAllDoctors")
+      const res = await axiosRequest.get("/admin/getAllDoctors", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
       if(res.data.success) {
         setDoctors(res.data.data)
       }
@@ -19,7 +23,11 @@ const Doctors = () => {
 
   const handleAccountStatus = async (record, status) => {
     try {
-      const res = await axiosRequest.post("/admin/changeAccountStatus", {doctorId: record._id, userId: record.userId, status: status});
+      const res = await axiosRequest.post("/admin/changeAccountStatus", {doctorId: record._id, userId: record.userId, status: status}, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
       if(res.data.success) {
         message.success(res.data.message)
       }

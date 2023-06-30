@@ -14,7 +14,11 @@ const NotificationPage = () => {
   const handleMarkAllRead = async () => {
     try {
       dispatch(showLoading());
-      const res = await axiosRequest.post("/user/get-all-notification", { userId: user._id });
+      const res = await axiosRequest.post("/user/get-all-notification", { userId: user._id }, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
@@ -49,13 +53,8 @@ const NotificationPage = () => {
   return (
     <Layout>
       <h4 className="p-3 text-center">Notification Page</h4>
-      <Tabs>
+      <Tabs className="p-3">
         <Tabs.TabPane tab="unRead" key={0}>
-          <div className="d-flex justify-content-end">
-            <h4 className="p-2" onClick={handleMarkAllRead}>
-              Mark All Read
-            </h4>
-          </div>
           {user?.notification.map((notificationMgs) => (
             <div className="card">
               <div
@@ -66,13 +65,13 @@ const NotificationPage = () => {
               </div>
             </div>
           ))}
+          <div className="d-flex justify-content-end p-4">
+            <button className="btn-notification" onClick={handleMarkAllRead}>
+              Mark All Read
+            </button>
+          </div>
         </Tabs.TabPane>
         <Tabs.TabPane tab="Read" key={1}>
-          <div className="d-flex justify-content-end">
-            <h4 className="p-2" onClick={handleDeletedAllRead}>
-              Deleted All Read
-            </h4>
-          </div>
           {user?.seennotification.map((seennotificationMgs) => (
             <div className="card">
               <div className="card-text" onClick={() => console.log("click")}>
@@ -80,6 +79,11 @@ const NotificationPage = () => {
               </div>
             </div>
           ))}
+          <div className="d-flex justify-content-end">
+            <button className="btn-notification" onClick={handleDeletedAllRead}>
+              Deleted All Read
+            </button>
+          </div>
         </Tabs.TabPane>
       </Tabs>
     </Layout>

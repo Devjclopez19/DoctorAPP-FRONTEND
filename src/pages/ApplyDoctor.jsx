@@ -23,6 +23,10 @@ const ApplyDoctor = () => {
           moment(values.timings[0]).format("HH:mm"),
           moment(values.timings[1]).format("HH:mm")
         ],
+      },{
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
       });
       dispatch(hideLoading())
       if(res.data.success) {

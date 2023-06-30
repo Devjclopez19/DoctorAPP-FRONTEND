@@ -20,7 +20,11 @@ const BookingPage = () => {
   // user data
   const getDoctorData = async () => {
     try {
-      const res = await axiosRequest.post("/doctor/getDoctorById", { doctorId: params.doctorId });
+      const res = await axiosRequest.get(`/doctor/getDoctorById/${params.doctorId}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
       if (res.data.success) {
         setDoctor(res.data.data);
       }
@@ -39,21 +43,22 @@ const BookingPage = () => {
   const handleBooking = async () => {
     try {
       setIsAvailable(true);
-      if(!date && !time) {
-        return alert("Date & Time Required")
+      if (!date && !time) {
+        return alert("Date & Time Required");
       }
       dispatch(showLoading());
-      const res = await axiosRequest.post(
-        "/user/book-appointment",
-        {
-          doctorId: params.doctorId,
-          userId: user._id,
-          doctorInfo: doctor,
-          date: date,
-          userInfo: user,
-          time: time,
+      const res = await axiosRequest.post("/user/book-appointment", {
+        doctorId: params.doctorId,
+        userId: user._id,
+        doctorInfo: doctor,
+        date: date,
+        userInfo: user,
+        time: time,
+      }, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
         }
-      );
+      });
       dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
@@ -66,15 +71,16 @@ const BookingPage = () => {
 
   const handleAvailability = async () => {
     try {
-    // dispatch(showLoading());
-      const res = await axiosRequest.post(
-        "/user/booking-availability",
-        {
-          doctorId: params.doctorId,
-          date,
-          time,
-        },
-      );
+      // dispatch(showLoading());
+      const res = await axiosRequest.post("/user/booking-availability", {
+        doctorId: params.doctorId,
+        date,
+        time,
+      }, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
       // dispatch(hideLoading());
       if (res.data.success) {
         setIsAvailable(true);
@@ -122,7 +128,11 @@ const BookingPage = () => {
               >
                 Check Availability
               </button>
-              <button className="btn btn-dark mt-2" onClick={handleBooking} disabled={!isAvailable}>
+              <button
+                className="btn btn-dark mt-2"
+                onClick={handleBooking}
+                disabled={!isAvailable}
+              >
                 Book Now
               </button>
             </div>

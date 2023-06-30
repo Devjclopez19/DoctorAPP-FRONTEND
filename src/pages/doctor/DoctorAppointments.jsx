@@ -12,10 +12,11 @@ const DoctorAppointments = () => {
 
   const getAppointments = async () => {
     try {
-      const res = await axiosRequest.get(
-        "/doctor/doctor-appointments",
+      const res = await axiosRequest.get(`/doctor/doctor-appointments/${user._id}`,
         {
-          userId: user?._id,
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
         }
       );
       if (res.data.success) {
@@ -34,7 +35,7 @@ const DoctorAppointments = () => {
 
   const handleStatus = async (record, status) => {
     try {
-      const res = await axiosRequest.post(
+      const res = await axiosRequest.put(
         "/doctor/update-status",
         {
           appointmentsId: record._id,

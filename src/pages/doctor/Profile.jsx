@@ -16,9 +16,13 @@ const Profile = () => {
   //getDoc Details
   const getDoctorInfo = async () => {
     try {
-      const res = await axiosRequest.post(
-        "/doctor/getDoctorInfo",
-        { userId: params.id },
+      const res = await axiosRequest.get(
+        `/doctor/getDoctorInfo/${params.id}`,
+        { 
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        }
       );
 
       if (res.data.success) {
@@ -36,7 +40,7 @@ const Profile = () => {
   const handleFinish = async (values) => {
     try {
       dispatch(showLoading());
-      const res = await axiosRequest.post(
+      const res = await axiosRequest.put(
         "/doctor/updateProfile",
         {
           ...values,
@@ -45,6 +49,11 @@ const Profile = () => {
             moment(values.timings[0]).format("HH:mm"),
             moment(values.timings[1]).format("HH:mm")
           ],
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
         }
       );
       dispatch(hideLoading());

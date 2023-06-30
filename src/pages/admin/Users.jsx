@@ -9,7 +9,11 @@ const Users = () => {
 
   const getUsers = async () => {
     try {
-      const res = await axiosRequest.get("/admin/getAllUsers")
+      const res = await axiosRequest.get("/admin/getAllUsers", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
       if(res.data.success) {
         setUsers(res.data.data)
       }

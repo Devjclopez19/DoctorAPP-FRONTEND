@@ -93,4 +93,23 @@
 .header-content a:hover {
   background: #0d47a1;
   color: antiquewhite;
+}
+.card {
+  background-color: beige;
+  margin: 10px;
+  padding: 1rem;
+  font-size: 1rem;
 } 
+.btn-notification {
+  background-color: transparent;
+  padding: .5rem 1rem;
+  border-radius: 5px;
+  border: 2px solid rgb(102, 2, 2);
+  color: rgb(102, 2, 2);
+  font-weight: 500;
+}
+.btn-notification:hover {
+  background-color: rgb(102, 2, 2);
+  color: #fff;
+  transition: .3s ease-in;
+}

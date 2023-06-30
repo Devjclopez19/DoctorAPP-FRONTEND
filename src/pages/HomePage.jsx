@@ -11,7 +11,11 @@ const HomePage = () => {
   // user data
   const getUserData = async () => {
     try {
-      const res = await axiosRequest.get("/user/getAllDoctors")
+      const res = await axiosRequest.get("/user/getAllDoctors", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      })
       if(res.data.success) {
         setDoctors(res.data.data)
       }

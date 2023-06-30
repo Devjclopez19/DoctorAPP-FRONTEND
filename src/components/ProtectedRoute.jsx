@@ -14,11 +14,16 @@ export default function ProtectedRoute({ children }) {
   
   const getUser = async () => {
     try {
-      const res = await axiosRequest.get("/user/getUserData");
+      const res = await axiosRequest.get("/user/getUserData", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token")
+        }
+      });
       if (res.data.success) {
         dispatch(setUser(res.data.data));
       } else {
-        window.location.reload();
+        dispatch(setUser(null));
+        localStorage.clear()
         navigate("/login")
       }
     } catch (error) {
@@ -27,16 +32,14 @@ export default function ProtectedRoute({ children }) {
   };
 
   useEffect(() => {
-
-    if(user === null) {
+    if(!user) {
       getUser()
     }
-  }, [user]);
+  }, [user, getUser]);
 
   if (localStorage.getItem("token")) {
     return children;
   } else {
-    console.log("No existe token, redireccionando a login");
     return <Navigate to="/login" />;
   }
 }
